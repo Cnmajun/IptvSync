@@ -1,0 +1,41 @@
+name: Bulk Scheduled Sync
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Batch Download Files
+        run: |
+          # 读取 list.txt，逐行处理
+          while read -r url dest || [ -n "$url" ]; do
+            # 忽略空行和以 # 开头的注释行
+            [[ -z "$url" || "$url" =~ ^# ]] && continue
+            
+            echo "正在同步: $url -> $dest"
+            
+            # 自动创建目标目录
+            mkdir -p "$(dirname "$dest")"
+            
+            # 执行下载
+            curl -L -o "$dest" "$url"
+          done < list.txt
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "自动同步更新: $(date +'%Y-%m-%d %H:%M')"
+            git push
+          else
+            echo "文件无变化，跳过提交"
+          fi
