@@ -7,3 +7,16 @@ https://bit.ly/sports4kuhd ./src/4Kuhd.m3u
 https://raw.githubusercontent.com/judy-gotv/iptv/refs/heads/main/LGTV-Schedule.m3u ./src/LG.m3u
 https://github.com/mavin521/syiptv/raw/refs/heads/main/live.m3u ./src/mavinlive.m3u
 https://github.com/mavin521/syiptv/raw/refs/heads/main/migu.m3u ./src/mavinmigu.m3u
+
+https://raw.githubusercontent.com/judy-gotv/iptv/main/MytvSuper.m3u ./Judy/MytvSuper.m3u
+https://raw.githubusercontent.com/judy-gotv/iptv/main/4gtv.m3u ./Judy/4gtv.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/xumo_playlist.m3u ./Judy/xumo_playlist.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/smart.m3u ./Judy/smart.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/smartbeiyong.m3u ./Judy/smartbeiyong.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/beesports.m3u ./Judy/beesports.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/combined-playlist.m3u ./Judy/combined-playlist.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/Goiptv.m3u ./Judy/Goiptv.m3u
+https://github.com/judy-gotv/iptv/raw/refs/heads/main/Nowsports.m3u ./Judy/Now4Kuhd.m3u
+
+
+
