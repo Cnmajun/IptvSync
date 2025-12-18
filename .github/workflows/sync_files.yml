@@ -2,8 +2,13 @@ name: Bulk Scheduled Sync
 
 on:
   schedule:
+    # 每 2 小时运行一次 (UTC 时间)
     - cron: '0 */2 * * *'
-  workflow_dispatch:
+  workflow_dispatch: # 允许你在 Actions 页面手动点击运行
+
+# 关键：确保机器人有写权限
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -14,28 +19,55 @@ jobs:
 
       - name: Batch Download Files
         run: |
-          # 读取 list.txt，逐行处理
+          # 确保 list.txt 存在
+          if [ ! -f list.txt ]; then
+            echo "错误: 找不到 list.txt 文件"
+            exit 1
+          fi
+
           while read -r url dest || [ -n "$url" ]; do
-            # 忽略空行和以 # 开头的注释行
+            # 忽略空行和以 # 开头的注释
             [[ -z "$url" || "$url" =~ ^# ]] && continue
             
-            echo "正在同步: $url -> $dest"
+            echo "检查链接: $url"
             
-            # 自动创建目标目录
-            mkdir -p "$(dirname "$dest")"
+            # 创建临时文件，避免直接覆盖损坏本地旧文件
+            temp_file=$(mktemp)
             
-            # 执行下载
-            curl -L -o "$dest" "$url"
+            # 下载逻辑：
+            # --fail: 遇到 404 等错误不输出任何内容
+            # -L: 跟随重定向
+            # --silent: 不显示进度条
+            if curl -L --fail --silent --show-error -o "$temp_file" "$url"; then
+                # 只有下载成功且文件大小大于 0 字节才替换
+                if [ -s "$temp_file" ]; then
+                    mkdir -p "$(dirname "$dest")"
+                    mv "$temp_file" "$dest"
+                    echo "成功同步至: $dest"
+                else
+                    echo "警告: 下载文件为空，跳过 $url"
+                    rm -f "$temp_file"
+                fi
+            else
+                echo "失败: 链接失效或网络异常，保留本地旧版本: $url"
+                rm -f "$temp_file"
+            fi
           done < list.txt
 
       - name: Commit and Push
         run: |
+          # 配置 Git 机器人身份
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 添加更改
           git add .
+          
+          # 检查是否有实际的文件变动
           if ! git diff --cached --quiet; then
+            echo "检测到文件更新，准备提交..."
             git commit -m "自动同步更新: $(date +'%Y-%m-%d %H:%M')"
             git push
           else
-            echo "文件无变化，跳过提交"
+            echo "内容未发生变化，无需提交。"
           fi
