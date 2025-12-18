@@ -1,0 +1,9 @@
+https://kakaxi-1.asia/ipv6.m3u ./src/kakaxiipv6.m3u
+https://kakaxi-1.asia/iptv.txt ./src/kakaxiiptv.txt
+https://raw.githubusercontent.com/lem85930/LiteTV/refs/heads/main/litelive.txt ./src/lemlitelive.txt
+https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/samsungtvplus_gb.m3u ./src/ss_gb.m3u
+https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/samsungtvplus_us.m3u ./src/ss_us.m3u
+https://bit.ly/sports4kuhd ./src/4Kuhd.m3u
+https://raw.githubusercontent.com/judy-gotv/iptv/refs/heads/main/LGTV-Schedule.m3u ./src/LG.m3u
+https://github.com/mavin521/syiptv/raw/refs/heads/main/live.m3u ./src/mavinlive.m3u
+https://github.com/mavin521/syiptv/raw/refs/heads/main/migu.m3u ./src/mavinmigu.m3u
